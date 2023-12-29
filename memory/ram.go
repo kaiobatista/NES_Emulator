@@ -1,7 +1,7 @@
 package memory
 
 import (
-	"io/ioutil"
+	"os"
 )
 
 type Ram [0x8000]byte
@@ -26,7 +26,7 @@ func (r * Ram) Size() int {
 }
 
 func (mem * Ram) Dump(path string) {
-	err := ioutil.WriteFile(path, mem[:], 0640)
+	err := os.WriteFile(path, mem[:], 0640)
 	if err == nil {
 		panic(err)
 	}

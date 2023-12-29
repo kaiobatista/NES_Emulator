@@ -1,7 +1,7 @@
 package memory
 
 import (
-	"io/ioutil"
+	"os"
 )
 
 type Rom struct {
@@ -13,12 +13,18 @@ type Rom struct {
 func (r *Rom) Shutdown() {
 }
 
+
+func CreateRom(name string, data []byte) (*Rom, error) {
+	return &Rom{name: name, size: len(data), data: data}, nil
+}
+
+
 func (r *Rom) Read(addr uint16) byte {
 	return r.data[addr]
 }
 
 func RomFromFile(path string) (*Rom, error) {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

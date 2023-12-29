@@ -13,6 +13,19 @@ type Instruction struct {
 	Op16 uint16
 }
 
+func (in Instruction) String() (s string) {
+	switch in.Bytes {
+	case 3:
+		s = fmt.Sprintf("%v $%04X", in.OpType, in.Op16)
+	case 2:
+		s = fmt.Sprintf("%v $%02X", in.OpType, in.Op8)
+	case 1:
+		s = in.OpType.String()
+	}
+	return
+}
+
+
 func ReadInstruction(pc uint16, bus *bus.Bus) Instruction {
 	opcode := bus.Read(pc)
 	optype, ok := optypes[opcode]

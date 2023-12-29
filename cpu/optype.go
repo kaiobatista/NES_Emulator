@@ -1,5 +1,7 @@
 package cpu
 
+import "fmt"
+
 const (
 	_ = iota
 	absolute 
@@ -168,6 +170,16 @@ type OpType struct {
 func (ot OpType) IsAbsolute() bool {
 	return ot.addressing == absolute
 }
+
+func (ot OpType) String() string {
+	return fmt.Sprintf("%s %s", ot.Name(), addressingNames[ot.addressing])
+}
+
+
+func (ot OpType) Name() (s string) {
+	return instructionNames[ot.id]
+}
+
 
 
 var optypes = map[uint8]OpType{
