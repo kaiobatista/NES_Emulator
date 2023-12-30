@@ -23,6 +23,7 @@ func main() {
 	data := make([]byte, 0x8000)
 	data[0xFFFC - 0x8000] = 0x00
 	data[0xFFFD - 0x8000] = 0x80 
+
 	code := strings.Fields("A9 05 8D 01 00 A9 08 8D 02 00 A9 00 AC 02 00 18 6D 01 00 88 D0 FA 8D 02 00")
 
 	for i, value := range code {
@@ -33,12 +34,10 @@ func main() {
 	
 
 	ram := &memory.Ram{}
-	// charRom, _ := memory.RomFromFile("rom.bin")
-	rom, _ := memory.CreateRom("kernal", data)
+	rom, _ := memory.CreateRom("rom", data)
 
 	addrBus.Attach(ram, "ram", 0x0000)
 	addrBus.Attach(rom, "rom", 0x8000)
-	// addrBus.Attach(kernelRom, "kernel", 0xF000)
 
 	cpu_.Reset()
 	pixelgl.Run(run)
@@ -62,10 +61,10 @@ func run() {
 	text04 := text.New(pixel.V(900, 500), atlas)
 
 	
-	
 
 	for !win.Closed() {
-		win.Clear(color.RGBA{R: 20, G: 35, B: 69})
+		win.Clear(color.RGBA{R: 30, G: 35, B: 69})
+
 		text01.Draw(win, pixel.IM.Scaled(text01.Orig, 1.7))
 		text02.Draw(win, pixel.IM.Scaled(text02.Orig, 1.7))
 		text03.Draw(win, pixel.IM.Scaled(text03.Orig, 1.7))
