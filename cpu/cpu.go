@@ -49,7 +49,7 @@ func (c *CPU) Reset() {
 func (c *CPU) Step() {
 	in := ReadInstruction(c.PC, c.Bus)
 
-	fmt.Printf("addr: %X | value: %X\n", c.PC, c.Bus.Read(c.PC))
+	fmt.Printf("addr: 0x%X | value: 0x%X\n", c.PC, c.Bus.Read(c.PC))
 
 	c.PC += uint16(in.Bytes)
 	c.execute(in)

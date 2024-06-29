@@ -35,6 +35,7 @@ func (r *Rom) Size() int {
 	return r.size
 }
 
-func (r *Rom) Write(_ uint16, _ byte) {	
+func (r *Rom) Write(addr uint16, value byte) {
+    r.data[addr] = value
 }
 

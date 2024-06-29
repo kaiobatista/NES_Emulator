@@ -24,7 +24,7 @@ func main() {
 	data[0xFFFC - 0x8000] = 0x00
 	data[0xFFFD - 0x8000] = 0x80 
 
-	code := strings.Fields("A9 05 8D 01 00 A9 08 8D 02 00 A9 00 AC 02 00 18 6D 01 00 88 D0 FA 8D 02 00")
+	code := strings.Fields("A9 0E 8D 01 00 A9 08 8D 02 00 A9 00 AC 02 00 18 6D 01 00 88 D0 FA 8D 02 00")
 
 	for i, value := range code {
 		v, _ := strconv.ParseUint(value, 16, 16)

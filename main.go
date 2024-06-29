@@ -1,39 +1,40 @@
 package main
 
 import (
-	"fmt"
-
+    "fmt"
 	"github.com/6502-Emulator/bus"
 	"github.com/6502-Emulator/cpu"
+    "github.com/6502-Emulator/ppu"
 	"github.com/6502-Emulator/memory"
+    "github.com/6502-Emulator/cartridge"
 )
 
 func main() {
-	data := make([]byte, 0xFFF)
-	data[0xFFC] = 0x00
-	data[0xFFD] = 0x80 
+	data := make([]byte, 0x7FFF)
 
-	charRom, _ := memory.RomFromFile("rom.bin")
-	kernelRom, _ := memory.CreateRom("kernal", data)
-
+	rom, _ := memory.CreateRom("rom", data)
 	ram := &memory.Ram{}
 
 	addrBus, _ := bus.CreateBus()
 	addrBus.Attach(ram, "ram", 0x0000)
-	addrBus.Attach(charRom, "rom", 0x8000)
-	addrBus.Attach(kernelRom, "kernel", 0xF000)
+	addrBus.Attach(rom, "rom", 0x8000)
+    addrBus.Write16(0xFFFC, 0x8000)
 
 	cpu := &cpu.CPU{Bus: addrBus}
-	
-	cpu.Reset()
+    ppu := &ppu.PPU{Bus: addrBus}
+  
+    fmt.Printf("0x%04X\n", ppu.T)
 
+    cpu.Reset()
+    
 	for i := 0; i < 41; i++ {
 		cpu.Step()
 	}
-	
-	
 
-	fmt.Println(cpu.Bus.Read(0x0002))
+    cart, err := cartridge.LoadFromFile("./donkey_kong.nes")
+    if err != nil {
+        fmt.Println(err)
+    }
 
-	fmt.Println("CPU: ", cpu)
+    fmt.Println(len(cart.CHR))
 }

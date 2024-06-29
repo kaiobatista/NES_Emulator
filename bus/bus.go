@@ -38,6 +38,12 @@ func (b *Bus) backendFor(addr uint16) (memory.Memory, error) {
 }
 
 func (b *Bus) Read(addr uint16) byte {
+    if addr >= 0x0000 && addr < 0x2000 {
+        addr = addr & 0x7FF
+    } else if addr >= 0x2000 && addr < 0x4000 {
+        addr = addr & 0x0007
+    }
+
 	mem, err := b.backendFor(addr)
 	if err != nil {
 		panic(err)
@@ -54,7 +60,13 @@ func (b *Bus) Read16(addr uint16) uint16 {
 
 
 func (b *Bus) Write(addr uint16, value byte) {
-	mem, err := b.backendFor(addr)
+    if addr >= 0x0000 && addr < 0x2000 {
+        addr = addr & 0x7FF
+    } else if addr >= 0x2000 && addr < 0x4000 {
+        addr = addr & 0x0007
+    }
+
+    mem, err := b.backendFor(addr)
 	if err != nil {
 		panic(err)
 	}
